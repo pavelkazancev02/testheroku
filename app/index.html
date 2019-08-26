@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tokenomics Workshop (Innopolis University)</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+  <script src="./app.js"></script>
+  <style>
+    body {
+      margin-top: 0%;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .margin-top-3 {
+      margin-top: 3em;
+    }
+    #form {
+      margin-top: 18px;
+    }
+    .workshop-control .workshop-control-field {
+      position: relative;
+      height: auto;
+      width: 25em;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .workshop-control input[id="workshop-name"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .workshop-control input[id="workshop-admin"] {
+      margin-bottom: 5px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    .project-adding .project-adding-field {
+      position: relative;
+      height: auto;
+      width: 25em;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .project-adding input[id="project-name"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .project-adding input[id="project-owner"] {
+      margin-bottom: 5px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    .participant-adding .participant-adding-field {
+      position: relative;
+      height: auto;
+      width: 25em;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .participant-adding input[id="participant-name"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .participant-adding input[id="participant-account"] {
+      margin-bottom: 5px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    .short-single-control-field {
+      position: relative;
+      height: auto;
+      width: 7em;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 5px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    .medium-single-control-field {
+      position: relative;
+      height: auto;
+      width: 25em;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 5px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  </style>
+</head>
+<body class="container">
+  <h2>Текущий воркшоп: <span class="black"><span id="workshop"></span></span></h3>
+  <div class="container-fluid">
+    Инвестиций на один проект: <span class="black"><span id="tokens-for-project"></span></span>
+    <br>Доля инвестора: <span class="black"><span id="tokens-for-voting"></span></span>
+  </div>
+  <h3>Проекты</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Проект</th>
+          <th>Владелец</th>
+          <th>Инвестиции</th>
+        </tr>
+      </thead>
+      <tbody id="projects-rows">
+      </tbody>
+    </table>
+  </div>
+  <h3>Участники</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Имя</th>
+          <th>Аккаунт</th>
+          <th>Баланс</th>
+        </tr>
+      </thead>
+      <tbody id="participants-rows">
+      </tbody>
+    </table>
+  </div>
+  <button type="button" class="btn btn-sm btn-primary" id="hide-and-show" onclick="App.hideAndShow()">Hide controls</button>
+  <div id="admin-interface">
+  <div class="container-fluid" id="participants" >
+    <form class="participant-adding">
+      <div class="page-header" id="form">
+        <h4>Добавить участника</h4>
+      </div>
+      <label for="participant-name" class="sr-only">ФИО</label>
+      <input type="text" id="participant-name" class="participant-adding-field" placeholder="ФИО"></input>
+      <label for="participant-account" class="sr-only">Аккаунт</label>
+      <input type="text" id="participant-account" class="participant-adding-field" placeholder="Адрес участника, например, 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
+      <br><button id="create-participant" onclick="App.addParticipant()">Добавить</button>
+    </form>
+  </div>  
+  <div class="container-fluid" id="projects" >
+    <form class="project-adding">
+      <div class="page-header" id="form">
+        <h4>Добавить проект</h4>
+      </div>
+      <label for="project-name" class="sr-only">Название</label>
+      <input type="text" id="project-name" class="project-adding-field" placeholder="Название, например, 'Игра криптокотики'"></input>
+      <label for="project-owner" class="sr-only">Владелец</label>
+      <input type="text" id="project-owner" class="project-adding-field" placeholder="Адрес владельца проекта, например, 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
+      <br><button id="create-project" onclick="App.addProject()">Добавить</button>
+    </form>
+  </div>
+  <div class="container-fluid" id="workshop">
+    <form class="workshop-control">
+      <div class="page-header" id="form">
+        <h4>Управление воркшопом</h4>
+      </div>
+      <label for="workshop-name" class="sr-only">Название</label>
+      <input type="text" id="workshop-name" class="workshop-control-field" placeholder="Название, например, 'для сотрудников банка'"></input>
+      <label for="workshop-admin" class="sr-only">Асистент</label>
+      <input type="text" id="workshop-admin" class="workshop-control-field" placeholder="Адрес асистента, например, 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
+      <br><button id="create-workshop" onclick="App.createWorkshop()">Создать</button>&nbsp;&nbsp;&nbsp;&nbsp;<button id="close-workshop" onclick="App.closeWorkshop()">Закрыть воркшоп</button>
+    </form>
+  </div>
+  <div class="container-fluid" id="funds">
+    <form>
+    <div class="page-header" id="form">
+      <h4>Баланс контракта <span id="contract-address"></span></h4>
+    </div>
+    POA: <span class="black"><span id="poa-balance"></span></span>
+    <br>EDC: <span class="black"><span id="edc-balance"></span></span>
+    <br><br><input type="text" id="token-amount" class="short-single-control-field" placeholder="300"></input>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button id="invest" onclick="App.investTokens()">Инвестировать в проекты</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button id="share" onclick="App.shareTokens()">Раздать участникам</button>
+    </form>
+  </div>
+    <div class="container-fluid" id="funds">
+      <form>
+      <div class="page-header" id="form">
+        <h4>Управление доступом к приложению</h4>
+      </div>
+      <input type="text" id="contract-owner-address" class="medium-single-control-field" placeholder="Адрес нового владельца контракта, например, 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button id="invest" onclick="App.transferOwnership()">Сменить владельца</button>
+      </form>
+    </div>
+  </div>
+  <br><span id="status"></span>
+</body>
+</html>
